@@ -13,13 +13,9 @@ public class NavigateApp {
 
     private void run() {
         display.showWelcome();
-        configureExitButton(); // Does not wait for execution.
-        // does not pause and wait for the button to be pressed.
-        // It registers instructions for what should happen later: While QR scanning is happening or until
-        // the very last command in run, the X-button action remains active.
+        configureExitButton();
         String rawCommand = qrCommandParser.scanRawCommand();
         display.showRawCommand(rawCommand);
-
     }
     private void configureExitButton() {
         swiftBot.enableButton(Button.X, () -> {
