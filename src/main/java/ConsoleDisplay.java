@@ -13,4 +13,5 @@ public class ConsoleDisplay {
         System.out.println("Raw QR command: [" + rawCommand + "]");
     }
 
+
 }
