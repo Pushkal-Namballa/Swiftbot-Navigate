@@ -68,14 +68,17 @@ public class QrCommandParser {
         duration = 0;
         errorMessage = "";
         command = null;
+
      if (rawCommand == null || rawCommand.isBlank()) {
          errorMessage = "Invalid command: QR code contained no command";
          return false;
      }
         String[] parts = rawCommand.trim().split(",", -1);
+
       if (parts.length != 3) {
           errorMessage = "Invalid  command: Key Letter, speed, duration.";
        return false;}
+
         String parsedCommand = parts[0].trim().toUpperCase();
 
         if (!parsedCommand.equals("F") && !parsedCommand.equals("B") && !parsedCommand.equals("L")
@@ -86,6 +89,7 @@ public class QrCommandParser {
 
         int parsedSpeed;
         int parsedDuration;
+
         try {
             parsedSpeed = Integer.parseInt(parts[1].trim());
             parsedDuration = Integer.parseInt(parts[2].trim());

@@ -16,12 +16,19 @@ public class NavigateApp {
         display.showWelcome();
         configureExitButton();
 
-        String rawCommand = qrCommandParser.scanRawCommand();
-        display.showRawCommand(rawCommand);
+        while (true) {
+            String rawCommand = qrCommandParser.scanRawCommand();
+            display.showRawCommand(rawCommand);
 
-        boolean isValid = qrCommandParser.parseMovementCommand(rawCommand);
+            boolean isValid =
+                    qrCommandParser.parseMovementCommand(rawCommand);
 
-        if (isValid) {
+            if (!isValid) {
+                System.out.println(qrCommandParser.getErrorMessage());
+                System.out.println("Please scan a new QR command.");
+                continue;
+            }
+
             System.out.println("Command: " + qrCommandParser.getCommand());
             System.out.println("Speed: " + qrCommandParser.getSpeed());
             System.out.println("Duration: " + qrCommandParser.getDuration());
@@ -29,14 +36,18 @@ public class NavigateApp {
             if (qrCommandParser.getCommand().equals("F")) {
                 movementController.moveForward(qrCommandParser.getSpeed(), qrCommandParser.getDuration());
 
-            } else if (qrCommandParser.getCommand().equals("b")) {
+            } else if (qrCommandParser.getCommand().equals("B")) {
                 movementController.moveBackward(qrCommandParser.getSpeed(), qrCommandParser.getDuration());
-            } else {
-                System.out.println("Movement for this command has not been implemented yet.");
-            }
 
-        } else {
-            System.out.println(qrCommandParser.getErrorMessage());
+            } else if (qrCommandParser.getCommand().equals("R")) {
+                movementController.turnRight();
+                System.out.println("Right turn completed.");
+
+            } else {
+                System.out.println(
+                        "Movement for this command has not been implemented yet."
+                );
+            }
         }
     }
     private void configureExitButton() {
@@ -44,6 +55,7 @@ public class NavigateApp {
             swiftBot.stopMove();
             display.showExitMessage();
             swiftBot.disableButton(Button.X);
+            System.exit(5);
         });
     }
 }
