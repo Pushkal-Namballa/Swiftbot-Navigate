@@ -41,10 +41,15 @@ public class NavigateApp {
 
             } else if (qrCommandParser.getCommand().equals("R")) {
                 movementController.turnRight();
+                movementController.moveForward(qrCommandParser.getSpeed(), qrCommandParser.getDuration());
                 System.out.println("Right turn completed.");
 
-            } else {
-                System.out.println(
+            } else if (qrCommandParser.getCommand().equals("L")) {
+                 movementController.turnLeft();
+                 movementController.moveForward(qrCommandParser.getSpeed(), qrCommandParser.getDuration());
+                System.out.println("Left turn completed.");
+
+            }   else { System.out.println(
                         "Movement for this command has not been implemented yet."
                 );
             }

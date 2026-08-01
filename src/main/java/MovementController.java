@@ -19,4 +19,7 @@ public class MovementController {
     public void turnRight (){
         swiftBot.move(TurnSpeed,-TurnSpeed,TurnDuration);
     }
+    public void turnLeft (){
+        swiftBot.move(-TurnSpeed, TurnSpeed, TurnDuration);
+    }
 }
