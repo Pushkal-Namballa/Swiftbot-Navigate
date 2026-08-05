@@ -21,38 +21,42 @@ public class NavigateApp {
             display.showRawCommand(rawCommand);
 
             boolean isValid =
-                    qrCommandParser.parseMovementCommand(rawCommand);
+                    qrCommandParser.parseMovementCommands(rawCommand);
 
             if (!isValid) {
                 System.out.println(qrCommandParser.getErrorMessage());
                 System.out.println("Please scan a new QR command.");
                 continue;
             }
+            for (int i = 0; i < qrCommandParser.getCommandCount(); i++) {
 
-            System.out.println("Command: " + qrCommandParser.getCommand());
-            System.out.println("Speed: " + qrCommandParser.getSpeed());
-            System.out.println("Duration: " + qrCommandParser.getDuration());
+                String command = qrCommandParser.getCommand(i);
+                int speed = qrCommandParser.getSpeed(i);
+                int duration = qrCommandParser.getDuration(i);
 
-            if (qrCommandParser.getCommand().equals("F")) {
-                movementController.moveForward(qrCommandParser.getSpeed(), qrCommandParser.getDuration());
+                System.out.println("Executing command " + (i + 1));
+                System.out.println("Command: " + command);
+                System.out.println("Speed: " + speed);
+                System.out.println("Duration: " + duration);
 
-            } else if (qrCommandParser.getCommand().equals("B")) {
-                movementController.moveBackward(qrCommandParser.getSpeed(), qrCommandParser.getDuration());
+                if (command.equals("F")) {
+                    movementController.moveForward(speed, duration);
 
-            } else if (qrCommandParser.getCommand().equals("R")) {
-                movementController.turnRight();
-                movementController.moveForward(qrCommandParser.getSpeed(), qrCommandParser.getDuration());
-                System.out.println("Right turn completed.");
+                } else if (command.equals("B")) {
+                    movementController.moveBackward(speed, duration);
 
-            } else if (qrCommandParser.getCommand().equals("L")) {
-                 movementController.turnLeft();
-                 movementController.moveForward(qrCommandParser.getSpeed(), qrCommandParser.getDuration());
-                System.out.println("Left turn completed.");
+                } else if (command.equals("R")) {
+                    movementController.turnRight();
+                    movementController.moveForward(speed, duration);
+                    System.out.println("Right turn completed.");
 
-            }   else { System.out.println(
-                        "Movement for this command has not been implemented yet."
-                );
+                } else if (command.equals("L")) {
+                    movementController.turnLeft();
+                    movementController.moveForward(speed, duration);
+                    System.out.println("Left turn completed.");
+                }
             }
+
         }
     }
     private void configureExitButton() {

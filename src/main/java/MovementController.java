@@ -3,8 +3,11 @@ import swiftbot.SwiftBotAPI;
 public class MovementController {
 
     private final SwiftBotAPI swiftBot;
-    private static final int TurnSpeed = 40;
-    private static final int TurnDuration = 850;
+    private static final int RightTurnSpeed = 40;
+    private static final int RightTurnDuration = 925;
+    private static final int LeftTurnSpeed = 40;
+    private static final int LeftTurnDuration = 850;
+
 
     public MovementController(SwiftBotAPI swiftBot) {
         this.swiftBot = swiftBot;
@@ -17,9 +20,9 @@ public class MovementController {
         swiftBot.move(-speed, -speed, duration * 1000);
     }
     public void turnRight (){
-        swiftBot.move(TurnSpeed,-TurnSpeed,TurnDuration);
+        swiftBot.move(RightTurnSpeed ,-RightTurnSpeed,RightTurnDuration);
     }
     public void turnLeft (){
-        swiftBot.move(-TurnSpeed, TurnSpeed, TurnDuration);
+        swiftBot.move(-LeftTurnSpeed, LeftTurnSpeed, LeftTurnDuration);
     }
 }

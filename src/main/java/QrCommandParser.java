@@ -8,6 +8,11 @@ public class QrCommandParser {
     private int duration;
     private String errorMessage;
     private String command;
+    private static final int MAX_COMMANDS = 10;
+    private String[] sequenceCommands;
+    private int[] sequenceSpeeds;
+    private int[] sequenceDurations;
+    private  int commandCount;
 
     public QrCommandParser(SwiftBotAPI swiftBot) {
         this.swiftBot = swiftBot;
@@ -46,19 +51,23 @@ public class QrCommandParser {
             Thread.currentThread().interrupt();
         }
     }
-    public int getSpeed() {
-        return speed;
+    public int getCommandCount() {
+        return commandCount;
     }
 
-    public int getDuration() {
-        return duration;
+    public String getCommand(int index) {
+        return sequenceCommands[index];
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public int getSpeed(int index) {
+        return sequenceSpeeds[index];
     }
-    public String getCommand() {
-        return command;
+
+    public int getDuration(int index) {
+        return sequenceDurations[index];
+    }
+        public String getErrorMessage() {
+            return errorMessage;
     }
 
 
@@ -106,6 +115,39 @@ public class QrCommandParser {
         speed = parsedSpeed;
         duration = parsedDuration;
 
+        return true;
+    }
+    public boolean parseMovementCommands(String rawCommand) {
+        commandCount = 0;
+
+        if (rawCommand == null || rawCommand.isBlank()) {
+            errorMessage = "Invalid command: QR code contained no command.";
+            return false;
+        }
+
+        String[] rawCommands = rawCommand.trim().split(";", -1);
+
+        if (rawCommands.length > MAX_COMMANDS) {
+            errorMessage = "Invalid sequence: a QR code can contain no more than 10 commands.";
+            return false;
+        }
+
+        sequenceCommands = new String[rawCommands.length];
+        sequenceSpeeds = new int[rawCommands.length];
+        sequenceDurations = new int[rawCommands.length];
+
+        for (int i = 0; i < rawCommands.length; i++) {
+            if (!parseMovementCommand(rawCommands[i])) {
+                errorMessage = "Command " + (i + 1) + ": " + errorMessage;
+                return false;
+            }
+
+            sequenceCommands[i] = command;
+            sequenceSpeeds[i] = speed;
+            sequenceDurations[i] = duration;
+        }
+
+        commandCount = rawCommands.length;
         return true;
     }
 }
