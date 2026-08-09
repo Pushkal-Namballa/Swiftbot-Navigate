@@ -6,6 +6,7 @@ public class NavigateApp {
     private final ConsoleDisplay display = new ConsoleDisplay();
     private final QrCommandParser qrCommandParser = new QrCommandParser(swiftBot);
     private final MovementController movementController = new MovementController(swiftBot);
+    private final CommandLogService commandLogService = new CommandLogService();
 
     public static void main(String[] args) {
         NavigateApp app = new NavigateApp();
@@ -55,8 +56,8 @@ public class NavigateApp {
                     movementController.moveForward(speed, duration);
                     System.out.println("Left turn completed.");
                 }
+                commandLogService.recordMovement(command,speed,duration);
             }
-
         }
     }
     private void configureExitButton() {
