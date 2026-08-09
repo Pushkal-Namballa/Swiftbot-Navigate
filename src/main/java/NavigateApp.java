@@ -28,6 +28,11 @@ public class NavigateApp {
                 System.out.println(qrCommandParser.getErrorMessage());
                 System.out.println("Please scan a new QR command.");
                 continue;
+            }if (qrCommandParser.isRetraceCommand()) {
+                System.out.println(
+                        "Retrace command format accepted: T,"  + qrCommandParser.getRetraceCount()
+                );
+
             }
             for (int i = 0; i < qrCommandParser.getCommandCount(); i++) {
 

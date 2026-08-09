@@ -13,6 +13,8 @@ public class QrCommandParser {
     private int[] sequenceSpeeds;
     private int[] sequenceDurations;
     private  int commandCount;
+    private boolean retraceCommand;
+    private int retraceCount;
 
     public QrCommandParser(SwiftBotAPI swiftBot) {
         this.swiftBot = swiftBot;
@@ -69,6 +71,11 @@ public class QrCommandParser {
         public String getErrorMessage() {
             return errorMessage;
     }
+public boolean isRetraceCommand(){
+return retraceCommand; }
+
+public  int getRetraceCount(){
+    return retraceCount;}
 
 
 
@@ -131,6 +138,31 @@ public class QrCommandParser {
             errorMessage = "Invalid sequence: a QR code can contain no more than 10 commands.";
             return false;
         }
+        if (rawCommands.length == 1) {
+            String[] firstCommandParts =
+                    rawCommands[0].trim().split(",", -1);
+
+            String firstCommandLetter =
+                    firstCommandParts[0].trim().toUpperCase();
+
+            if (firstCommandLetter.equals("T")) {
+                return parseRetraceCommand(rawCommands[0]);
+            }
+        }
+
+        for (int i = 0; i < rawCommands.length; i++) {
+            String[] commandParts =
+                    rawCommands[i].trim().split(",", -1);
+
+            String commandLetter =
+                    commandParts[0].trim().toUpperCase();
+
+            if (commandLetter.equals("T")) {
+                errorMessage =
+                        "Invalid sequence: T cannot be used in a multiple-command sequence.";
+                return false;
+            }
+        }
 
         sequenceCommands = new String[rawCommands.length];
         sequenceSpeeds = new int[rawCommands.length];
@@ -149,5 +181,32 @@ public class QrCommandParser {
 
         commandCount = rawCommands.length;
         return true;
+
+        }
+    private boolean parseRetraceCommand(String rawCommand) {
+        String[] parts = rawCommand.trim().split(",", -1);
+
+        if (parts.length != 2) {
+            errorMessage = "Invalid T command: use T,number.";
+            return false;
+        }
+
+        int parsedRetraceCount;
+
+        try {
+            parsedRetraceCount = Integer.parseInt(parts[1].trim());
+        } catch (NumberFormatException e) {
+            errorMessage = "Invalid T command: number must be a whole number.";
+            return false;
+        }
+
+        if (parsedRetraceCount < 1) {
+            errorMessage = "Invalid T command: number must be at least 1.";
+            return false;
+        }
+
+        retraceCommand = true;
+        retraceCount = parsedRetraceCount;
+        return true;
     }
-}
+    }
