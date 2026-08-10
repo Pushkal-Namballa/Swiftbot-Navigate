@@ -29,40 +29,60 @@ public class NavigateApp {
                 System.out.println("Please scan a new QR command.");
                 continue;
             }if (qrCommandParser.isRetraceCommand()) {
-                System.out.println(
-                        "Retrace command format accepted: T,"  + qrCommandParser.getRetraceCount()
-                );
+                int retraceCount = qrCommandParser.getRetraceCount();
+
+                int historySizeBeforeRetrace =
+                        commandLogService.getMovementCount();
+
+                if (retraceCount > historySizeBeforeRetrace) {
+                    System.out.println("Cannot retrace " + retraceCount + " movement(s). Only " + historySizeBeforeRetrace
+                                    + " movement(s) have been executed.");
+                    System.out.println("Please scan a new QR command.");
+
+                } else {
+                    int newestHistoryIndex =
+                            historySizeBeforeRetrace - 1;
+
+                    int oldestHistoryIndex =
+                            historySizeBeforeRetrace - retraceCount;
+
+                    System.out.println(
+                            "Retrace request accepted: "
+                                    + retraceCount + " movement(s)."
+                    );
+
+                }
 
             } else {
-                for (int i = 0; i < qrCommandParser.getCommandCount(); i++) {
+            for (int i = 0; i < qrCommandParser.getCommandCount(); i++) {
 
-                    String command = qrCommandParser.getCommand(i);
-                    int speed = qrCommandParser.getSpeed(i);
-                    int duration = qrCommandParser.getDuration(i);
+                String command = qrCommandParser.getCommand(i);
+                int speed = qrCommandParser.getSpeed(i);
+                int duration = qrCommandParser.getDuration(i);
 
-                    System.out.println("Executing command " + (i + 1));
-                    System.out.println("Command: " + command);
-                    System.out.println("Speed: " + speed);
-                    System.out.println("Duration: " + duration);
+                System.out.println("Executing command " + (i + 1));
+                System.out.println("Command: " + command);
+                System.out.println("Speed: " + speed);
+                System.out.println("Duration: " + duration);
 
-                    if (command.equals("F")) {
-                        movementController.moveForward(speed, duration);
+                if (command.equals("F")) {
+                    movementController.moveForward(speed, duration);
 
-                    } else if (command.equals("B")) {
-                        movementController.moveBackward(speed, duration);
+                } else if (command.equals("B")) {
+                    movementController.moveBackward(speed, duration);
 
-                    } else if (command.equals("R")) {
-                        movementController.turnRight();
-                        movementController.moveForward(speed, duration);
-                        System.out.println("Right turn completed.");
+                } else if (command.equals("R")) {
+                    movementController.turnRight();
+                    movementController.moveForward(speed, duration);
+                    System.out.println("Right turn completed.");
 
-                    } else if (command.equals("L")) {
-                        movementController.turnLeft();
-                        movementController.moveForward(speed, duration);
-                        System.out.println("Left turn completed.");
-                    }
-                    commandLogService.recordMovement(command, speed, duration);
+                } else if (command.equals("L")) {
+                    movementController.turnLeft();
+                    movementController.moveForward(speed, duration);
+                    System.out.println("Left turn completed.");
                 }
+                commandLogService.recordMovement(command,speed,duration);
+            }
             }
         }
     }
