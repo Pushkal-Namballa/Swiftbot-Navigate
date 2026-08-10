@@ -126,6 +126,9 @@ public  int getRetraceCount(){
     }
     public boolean parseMovementCommands(String rawCommand) {
         commandCount = 0;
+        retraceCommand = false;
+        retraceCount = 0;
+        errorMessage = "";
 
         if (rawCommand == null || rawCommand.isBlank()) {
             errorMessage = "Invalid command: QR code contained no command.";
