@@ -49,7 +49,42 @@ public class NavigateApp {
                     System.out.println(
                             "Retrace request accepted: "
                                     + retraceCount + " movement(s)."
-                    );
+                    ); for (int i = newestHistoryIndex; i >= oldestHistoryIndex; i--) {
+
+                        String command =
+                                commandLogService.getMovementCommand(i);
+
+                        int speed =
+                                commandLogService.getMovementSpeed(i);
+
+                        int duration =
+                                commandLogService.getMovementDuration(i);
+
+                        System.out.println("Retracing movement: " + command);
+                        System.out.println("Speed: " + speed);
+                        System.out.println("Duration: " + duration);
+
+                        if (command.equals("F")) {
+                            movementController.moveForward(speed, duration);
+
+                        } else if (command.equals("B")) {
+                            movementController.moveBackward(speed, duration);
+
+                        } else if (command.equals("R")) {
+                            movementController.turnRight();
+                            movementController.moveForward(speed, duration);
+                            System.out.println("Right turn completed.");
+
+                        } else if (command.equals("L")) {
+                            movementController.turnLeft();
+                            movementController.moveForward(speed, duration);
+                            System.out.println("Left turn completed.");
+                        }
+
+                        commandLogService.recordMovement(command, speed, duration);
+                    }
+
+                    System.out.println("Retrace completed.");
 
                 }
 
