@@ -98,7 +98,12 @@ public class NavigateApp {
                 System.out.println("Command: " + command);
 
                 if (command.equals("W")) {
-                    System.out.println("Write command accepted.");
+
+                    String logFilePath = commandLogService.writeLog(programStartTime);
+
+                    if (logFilePath != null) {
+                        System.out.println("Log file saved to: " + logFilePath );
+                    }
 
                 } else {
                     int speed = qrCommandParser.getSpeed(i);
