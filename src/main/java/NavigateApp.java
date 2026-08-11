@@ -20,7 +20,7 @@ public class NavigateApp {
         while (true) {
             String rawCommand = qrCommandParser.scanRawCommand();
             display.showRawCommand(rawCommand);
-
+            commandLogService.recordReceivedCommand(rawCommand);
             boolean isValid =
                     qrCommandParser.parseMovementCommands(rawCommand);
 

@@ -5,6 +5,7 @@ public class CommandLogService {
     private final ArrayList<String> movementCommands = new ArrayList<>();
     private final ArrayList<Integer> movementSpeeds = new ArrayList<>();
     private final ArrayList<Integer> movementDurations = new ArrayList<>();
+    private final ArrayList<String> receivedCommands = new ArrayList<>();
 
     public void recordMovement(String command, int speed, int duration) {
         movementCommands.add(command);
@@ -26,5 +27,9 @@ public class CommandLogService {
     public int getMovementDuration(int index) {
         return movementDurations.get(index);
     }
+    public void recordReceivedCommand(String rawCommand){
+        receivedCommands.add(rawCommand);
+    }
+
 }
 
