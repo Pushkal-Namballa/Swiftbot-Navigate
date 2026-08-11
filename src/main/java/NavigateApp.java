@@ -92,31 +92,38 @@ public class NavigateApp {
             for (int i = 0; i < qrCommandParser.getCommandCount(); i++) {
 
                 String command = qrCommandParser.getCommand(i);
-                int speed = qrCommandParser.getSpeed(i);
-                int duration = qrCommandParser.getDuration(i);
 
                 System.out.println("Executing command " + (i + 1));
                 System.out.println("Command: " + command);
-                System.out.println("Speed: " + speed);
-                System.out.println("Duration: " + duration);
 
-                if (command.equals("F")) {
-                    movementController.moveForward(speed, duration);
+                if (command.equals("W")) {
+                    System.out.println("Write command accepted.");
 
-                } else if (command.equals("B")) {
-                    movementController.moveBackward(speed, duration);
+                } else {
+                    int speed = qrCommandParser.getSpeed(i);
+                    int duration = qrCommandParser.getDuration(i);
 
-                } else if (command.equals("R")) {
-                    movementController.turnRight();
-                    movementController.moveForward(speed, duration);
-                    System.out.println("Right turn completed.");
+                    System.out.println("Speed: " + speed);
+                    System.out.println("Duration: " + duration);
 
-                } else if (command.equals("L")) {
-                    movementController.turnLeft();
-                    movementController.moveForward(speed, duration);
-                    System.out.println("Left turn completed.");
+                    if (command.equals("F")) {
+                        movementController.moveForward(speed, duration);
+
+                    } else if (command.equals("B")) {
+                        movementController.moveBackward(speed, duration);
+
+                    } else if (command.equals("R")) {
+                        movementController.turnRight();
+                        movementController.moveForward(speed, duration);
+                        System.out.println("Right turn completed.");
+
+                    } else if (command.equals("L")) {
+                        movementController.turnLeft();
+                        movementController.moveForward(speed, duration);
+                        System.out.println("Left turn completed.");
+                    }
+                    commandLogService.recordMovement(command, speed, duration);
                 }
-                commandLogService.recordMovement(command,speed,duration);
             }
             }
         }

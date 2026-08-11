@@ -172,14 +172,33 @@ public  int getRetraceCount(){
         sequenceDurations = new int[rawCommands.length];
 
         for (int i = 0; i < rawCommands.length; i++) {
-            if (!parseMovementCommand(rawCommands[i])) {
-                errorMessage = "Command " + (i + 1) + ": " + errorMessage;
-                return false;
-            }
 
-            sequenceCommands[i] = command;
-            sequenceSpeeds[i] = speed;
-            sequenceDurations[i] = duration;
+            String[] commandParts = rawCommands[i].trim().split(",", -1);
+
+            String commandLetter = commandParts[0].trim().toUpperCase();
+
+            if (commandLetter.equals("W")) {
+
+                if (!rawCommands[i].trim().equalsIgnoreCase("W")) {
+                    errorMessage =
+                            "Command " + (i + 1) + ": Invalid W command: use W only.";
+                    return false;
+                }
+
+                sequenceCommands[i] = "W";
+                sequenceSpeeds[i] = 0;
+                sequenceDurations[i] = 0;
+
+            } else { if (!parseMovementCommand(rawCommands[i])) {
+                    errorMessage =
+                            "Command " + (i + 1) + ": " + errorMessage;
+                    return false;
+                }
+
+                sequenceCommands[i] = command;
+                sequenceSpeeds[i] = speed;
+                sequenceDurations[i] = duration;
+            }
         }
 
         commandCount = rawCommands.length;
