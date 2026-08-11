@@ -189,7 +189,8 @@ public  int getRetraceCount(){
                 sequenceSpeeds[i] = 0;
                 sequenceDurations[i] = 0;
 
-            } else { if (!parseMovementCommand(rawCommands[i])) {
+            } else {
+                if (!parseMovementCommand(rawCommands[i])) {
                     errorMessage =
                             "Command " + (i + 1) + ": " + errorMessage;
                     return false;

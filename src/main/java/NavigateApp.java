@@ -14,6 +14,7 @@ public class NavigateApp {
     }
 
     private void run() {
+        long programStartTime = System.currentTimeMillis();
         display.showWelcome();
         configureExitButton();
 
