@@ -1,6 +1,6 @@
 public class ConsoleDisplay {
     public void showWelcome() {
-        System.out.println("NAVIGATE");
+        System.out.println(" Welcome to NAVIGATE");
         System.out.println("SwiftBot navigation system started.");
         System.out.println("Press X to exit.");
     }
