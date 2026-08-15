@@ -1,9 +1,9 @@
 import java.awt.image.BufferedImage;
 import swiftbot.SwiftBotAPI;
 
-public class QrCommandParser {
+public class QrCommandParser extends SwiftBotComponent {
 
-    private final SwiftBotAPI swiftBot;
+    
     private int speed;
     private int duration;
     private String errorMessage;
@@ -17,14 +17,14 @@ public class QrCommandParser {
     private int retraceCount;
 
     public QrCommandParser(SwiftBotAPI swiftBot) {
-        this.swiftBot = swiftBot;
+        super(swiftBot);
     }
 
     public String scanRawCommand() {
         System.out.println("Scanning for a QR code...");
         while (true) {
             try {
-                BufferedImage image = swiftBot.getQRImage();
+            	BufferedImage image = getSwiftBot().getQRImage();
 
                 if (image == null) {
                     System.out.println("Camera did not capture an image. Trying again...");
@@ -32,7 +32,7 @@ public class QrCommandParser {
                     continue;
                 }
 
-                String decodedMessage = swiftBot.decodeQRImage(image);
+                String decodedMessage = getSwiftBot().decodeQRImage(image);
 
                 if (decodedMessage != null && !decodedMessage.isBlank()) {
                     return decodedMessage;
@@ -233,3 +233,4 @@ public  int getRetraceCount(){
         return true;
     }
     }
+
